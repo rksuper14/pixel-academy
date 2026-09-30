@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maths 5e — Pixel Academy</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#101425;color:#f4f6ff}
+header{padding:24px 18px;text-align:center;background:linear-gradient(135deg,#5b45ff,#00b8ff)}
+header h1{margin:0 0 7px;font-size:34px}header p{margin:0}
+.stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:15px}
+.stat{background:#11182bcc;padding:9px 14px;border-radius:999px;font-weight:bold}
+nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:13px;background:#181e34;position:sticky;top:0;z-index:5}
+button,.tab,select,input{font:inherit}button,.tab{border:0;border-radius:11px;padding:11px 14px;font-weight:bold;cursor:pointer;background:#2a3353;color:#fff}
+button:hover,.tab.active{background:#5b45ff}main{max-width:1100px;margin:24px auto;padding:0 15px}
+.page{display:none}.page.active{display:block}.card{background:#181e34;border:1px solid #2a3353;border-radius:18px;padding:21px;margin-bottom:18px;box-shadow:0 8px 30px #0003}
+.hero{background:linear-gradient(135deg,#302080,#125f86)}h2{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:13px}
+.topic,.game{background:#202844;border:1px solid #333d61;border-radius:15px;padding:16px;cursor:pointer}
+.topic:hover,.game:hover{transform:translateY(-2px);border-color:#6f62ff}
+.pill{display:inline-block;background:#313b63;border-radius:99px;padding:4px 8px;font-size:12px}
+.lesson{line-height:1.65}.simple{background:#202b49;border-left:5px solid #00c8ff;padding:13px;border-radius:9px}
+.example{background:#25204a;border-left:5px solid #8c70ff;padding:13px;border-radius:9px}
+input,select{background:#101628;color:white;border:1px solid #455173;border-radius:9px;padding:10px;width:210px}
+.feedback{margin-top:12px;font-weight:bold}.good{color:#52e58a}.bad{color:#ff7373}
+.progress{height:14px;background:#0d1220;border-radius:99px;overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,#00e5ff,#8b5cff);width:0}
+.codebox{display:flex;gap:8px;flex-wrap:wrap}.codebox input{width:260px}
+.reward{font-size:18px;color:#ffd85a}.tiny{color:#aeb7d0;font-size:13px}
+.gamebox{min-height:180px;text-align:center}.big{font-size:42px;font-weight:900;margin:18px}
+.badge{display:inline-block;padding:7px 10px;background:#352d66;border-radius:10px;margin:4px}
+footer{text-align:center;color:#8f99b6;padding:30px}
+
+/* PIXEL ACADEMY — mobile/PWA */
+html,body{width:100%;min-height:100%;overscroll-behavior:none}
+body{padding-bottom:env(safe-area-inset-bottom)}
+header{padding-top:calc(20px + env(safe-area-inset-top))}
+nav{overflow-x:auto;justify-content:flex-start;flex-wrap:nowrap;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:0 0 auto;min-height:44px}
+main{width:100%;margin:14px auto;padding:0 10px}
+.card{padding:17px;margin-bottom:12px;border-radius:16px}
+.grid{grid-template-columns:1fr 1fr;gap:10px}
+.topic,.game{padding:13px;min-height:120px}
+button{min-height:44px}
+input,select{width:100%;max-width:100%;min-height:44px}
+.codebox{display:grid;grid-template-columns:1fr}
+.codebox input{width:100%}
+.gamebox{min-height:190px}
+.big{font-size:36px}
+@media(max-width:430px){
+ header h1{font-size:27px}
+ header p{font-size:14px}
+ .stats{gap:6px}.stat{font-size:13px;padding:8px 10px}
+ .grid{grid-template-columns:1fr}
+ .topic,.game{min-height:auto}
+ .hero button{width:100%}
+}
+
+</style>
+
+<meta name="theme-color" content="#5b45ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pixel Academy">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+</head>
+<body>
+<header>
+<h1>🎮 Maths 5e — PIXEL ACADEMY</h1>
+<p>Apprends. Gagne des XP. Récolte des ⭐. Joue.</p>
+<div class="stats">
+<div class="stat">⭐ <span id="tokens">20</span> Jetons</div>
+<div class="stat">⚡ <span id="xp">0</span> XP</div>
+<div class="stat">🏅 Niveau <span id="level">1</span></div>
+</div>
+</header>
+<nav>
+<button class="tab active" onclick="show('home',this)">🏠 Accueil</button>
+<button class="tab" onclick="show('courses',this)">📚 Cours</button>
+<button class="tab" onclick="show('practice',this)">✏️ Défis</button>
+<button class="tab" onclick="show('arcade',this)">🎮 Arcade</button>
+<button class="tab" onclick="show('rewards',this)">🎁 Récompenses</button>
+<button class="tab" onclick="show('progress',this)">🏆 Profil</button>
+</nav>
+<main>
+
+<section id="home" class="page active">
+<div class="card hero"><h2>Bienvenue dans Pixel Academy 🚀</h2>
+<p>Ici, pas besoin de comprendre des mots compliqués. Chaque notion est expliquée comme si un copain te l'expliquait.</p>
+<p><b>Ta mission :</b> réussir des défis → gagner des XP et des jetons → débloquer l'arcade.</p>
+<button onclick="show('practice',document.querySelectorAll('.tab')[2])">⚔️ Lancer un défi</button>
+</div>
+<div class="card"><h2>🗺️ Ton parcours de 5e</h2><div id="topics" class="grid"></div></div>
+</section>
+
+<section id="courses" class="page">
+<div class="card"><h2>📖 Cours ultra simples</h2>
+<select id="courseSelect" onchange="renderCourse()"></select>
+<div id="courseContent" class="lesson"></div></div>
+</section>
+
+<section id="practice" class="page">
+<div class="card"><h2>⚔️ Défi du jour</h2><p class="tiny">Une bonne réponse te donne des XP et des jetons. Une erreur ne retire rien.</p>
+<div id="exercise"></div><button onclick="newExercise()">🔄 Autre défi</button></div>
+</section>
+
+<section id="arcade" class="page">
+<div class="card"><h2>🎮 PIXEL ARCADE</h2>
+<p>Chaque partie coûte quelques ⭐. Les jeux sont courts et simples. Choisis ton jeu !</p>
+<div id="games" class="grid"></div></div>
+<div class="card" id="gameArea" style="display:none"></div>
+</section>
+
+<section id="rewards" class="page">
+<div class="card"><h2>🎁 Boutique & codes cadeaux</h2>
+<p>Tu peux gagner des jetons en travaillant, puis les dépenser dans l'arcade.</p>
+<div class="codebox"><input id="code" placeholder="Entre un code cadeau"><button onclick="redeem()">🎁 Valider</button></div>
+<div id="codeMsg" class="feedback"></div>
+<p class="tiny">Codes d'exemple : <b>PIXEL10</b>, <b>MATHSTAR</b>, <b>COACH25</b>. Chaque code ne fonctionne qu'une fois.</p>
+</div>
+<div class="card"><h2>🏅 Succès</h2><div id="badges"></div></div>
+</section>
+
+<section id="progress" class="page">
+<div class="card"><h2>🏆 Mon profil</h2>
+<p>⭐ Jetons : <b id="tokens2">20</b></p><p>⚡ XP : <b id="xp2">0</b></p><p>🏅 Niveau : <b id="level2">1</b></p>
+<div class="progress"><div id="bar" class="bar"></div></div>
+<p id="next"></p></div>
+<div class="card"><h2>🔥 Règle de progression</h2>
+<p>100 XP = 1 niveau. Les défis donnent plus de récompenses que les mini-jeux.</p></div>
+</section>
+</main>
+<footer>Pixel Academy — Maths 5e • Ton cerveau est ton super-pouvoir 🧠</footer>
+
+<script>
+const courses=[
+["Nombres & calculs","Un calcul, c'est comme une recette : on suit les étapes dans le bon ordre.",
+"Imagine une file d'attente. Les parenthèses passent en premier. Ensuite × et ÷. Et seulement après + et −.",
+"7 + 3 × 4 → d'abord 3×4=12 → puis 7+12=19."],
+["Fractions","Une fraction, c'est une part d'un gâteau 🍕.",
+"Le nombre du haut dit combien de parts tu prends. Celui du bas dit en combien de parts le gâteau est découpé.",
+"3/5 signifie : 3 parts prises sur 5 parts égales."],
+["Proportionnalité","Si tout augmente toujours au même rythme, tu es probablement dans une situation de proportionnalité.",
+"Exemple simple : 2 bouteilles coûtent 6 €. Donc 1 bouteille coûte 3 €. Alors 5 bouteilles coûtent 15 €.",
+"Astuce : cherche le nombre par lequel on multiplie pour passer d'une ligne à l'autre."],
+["Calcul littéral","Une lettre peut jouer le rôle d'un nombre mystère 🕵️.",
+"Si x vaut 4, alors 3x veut dire 3 × 4. La lettre n'est pas magique : elle représente juste un nombre.",
+"Si x=5 → 2x+1 = 2×5+1 = 11."],
+["Angles & triangles","Un triangle a toujours un total de 180°.",
+"Si tu connais deux angles, tu peux trouver le dernier en faisant 180° − les deux autres.",
+"50° + 60° = 110° → dernier angle = 180° − 110° = 70°."],
+["Symétrie & constructions","La symétrie, c'est comme un miroir 🪞.",
+"Un point et son image sont à la même distance de l'axe. Si tu plies la feuille sur l'axe, les deux côtés doivent se superposer.",
+"Pour la médiatrice : elle coupe un segment exactement en deux et forme un angle droit avec lui."],
+["Périmètres & aires","Le périmètre = faire le tour. L'aire = remplir l'intérieur.",
+"Rectangle : P=2×(L+l). Aire=L×l. Attention : périmètre en cm, aire en cm².",
+"8 cm × 3 cm → aire = 24 cm² et périmètre = 22 cm."],
+["Volumes","Le volume, c'est la place occupée par un objet en 3D 📦.",
+"Pour une boîte rectangulaire : longueur × largeur × hauteur.",
+"5×4×3 = 60 cm³."],
+["Repérage","Un point dans un repère a une adresse : (x ; y).",
+"x = déplacement gauche/droite. y = déplacement bas/haut. Toujours dans cet ordre.",
+"A(3 ; 2) = 3 à droite puis 2 vers le haut."],
+["Statistiques","Une moyenne, c'est une façon de trouver une valeur « au milieu ».",
+"Additionne toutes les valeurs, puis divise par le nombre de valeurs.",
+"8, 10, 12 → (8+10+12)÷3 = 10."],
+["Probabilités","Une probabilité mesure les chances qu'un événement arrive.",
+"0 = impossible. 1 = certain. Entre les deux = possible.",
+"Avec un dé équilibré, faire 6 a une chance sur 6, donc 1/6."]
+];
+
+const topics=document.getElementById("topics"), sel=document.getElementById("courseSelect");
+courses.forEach((c,i)=>{topics.innerHTML+=`<div class="topic" onclick="openCourse(${i})"><span class="pill">Mission ${i+1}</span><h3>${c[0]}</h3><p>${c[1]}</p></div>`;sel.innerHTML+=`<option value="${i}">${c[0]}</option>`});
+function openCourse(i){sel.value=i;renderCourse();show('courses',document.querySelectorAll('.tab')[1])}
+function renderCourse(){let c=courses[+sel.value];document.getElementById("courseContent").innerHTML=`<h3>${c[0]}</h3><p>${c[1]}</p><div class="simple"><b>🧠 En très simple :</b><br>${c[2]}</div><div class="example"><b>🎯 Exemple :</b><br>${c[3]}</div>`}
+renderCourse();
+
+let tokens=Number(localStorage.getItem("tokens")??20),xp=Number(localStorage.getItem("xp")??0),used=JSON.parse(localStorage.getItem("usedCodes")||"[]");
+function save(){localStorage.setItem("tokens",tokens);localStorage.setItem("xp",xp);localStorage.setItem("usedCodes",JSON.stringify(used));update()}
+function update(){
+let level=Math.floor(xp/100)+1;document.getElementById("tokens").textContent=tokens;document.getElementById("xp").textContent=xp;document.getElementById("level").textContent=level;
+document.getElementById("tokens2").textContent=tokens;document.getElementById("xp2").textContent=xp;document.getElementById("level2").textContent=level;
+document.getElementById("bar").style.width=(xp%100)+"%";document.getElementById("next").textContent=`Encore ${100-(xp%100)} XP avant le niveau ${level+1}.`;
+document.getElementById("badges").innerHTML=[xp>=100?"🥉 Premier niveau":null,xp>=300?"🥈 Explorateur":null,xp>=500?"🥇 Machine à calculer":null,tokens>=100?"💎 Collectionneur":null].filter(Boolean).map(x=>`<span class="badge">${x}</span>`).join("")||"🔒 Continue pour débloquer des succès !";
+}
+update();
+
+const exercises=[
+["Calcule : 8 + 3 × 4",20,"× passe avant +."],["Calcule : (15 − 7) × 3",24,"Commence par les parenthèses."],
+["Triangle : angles 45° et 65°. 3e angle ?",70,"Les trois angles font 180°."],
+["Rectangle 9 cm × 4 cm : aire ?",36,"Aire = longueur × largeur."],
+["Pavé 5×2×3 : volume ?",30,"Volume = L×l×h."],
+["Moyenne de 8, 10 et 12 ?",10,"Additionne puis divise par 3."],
+["4 stylos coûtent 8 €. 7 stylos coûtent ?",14,"Un stylo coûte 2 €."]
+];
+let current;
+function newExercise(){current=exercises[Math.floor(Math.random()*exercises.length)];document.getElementById("exercise").innerHTML=`<h3>${current[0]}</h3><input id="answer" type="number" step="any" placeholder="Ta réponse"> <button onclick="checkEx()">Vérifier</button><div id="exf" class="feedback"></div>`}
+function checkEx(){let f=document.getElementById("exf"),v=Number(document.getElementById("answer").value);if(v===current[1]){f.className="feedback good";f.textContent="🎉 BRAVO ! +20 XP et +5 ⭐";xp+=20;tokens+=5;save()}else{f.className="feedback bad";f.textContent="Pas encore ! 💡 "+current[2]}}
+newExercise();
+
+const codes={PIXEL10:10,MATHSTAR:15,COACH25:25,MEGAMATH:50};
+function redeem(){let x=document.getElementById("code").value.trim().toUpperCase(),m=document.getElementById("codeMsg");if(!codes[x]){m.className="feedback bad";m.textContent="❌ Code inconnu."}else if(used.includes(x)){m.className="feedback bad";m.textContent="⚠️ Ce code a déjà été utilisé."}else{tokens+=codes[x];used.push(x);m.className="feedback good";m.textContent=`🎁 Code accepté ! +${codes[x]} ⭐`;save()}}
+
+const games=[
+["⚡ Clic Éclair",2,"click"],["🎯 Nombre Mystère",3,"guess"],["🧠 Vrai ou Faux",2,"true"],["➕ Duel Express",3,"math"],["🔢 Suite Logique",3,"sequence"],
+["🎲 Dé de Chance",2,"dice"],["🧩 Plus ou Moins",2,"higher"],["⏱️ Réflexe 5 secondes",2,"timer"],["🔐 Code Secret",4,"code"],
+["🚀 Compte à rebours",2,"count"],["🍀 Pair ou Impair",2,"parity"],["🎯 Trouve la cible",3,"target"],
+["🧮 Calcul Flash",2,"flash"],["🔺 Triangle Quiz",2,"triangle"],["💎 Coffre à Jetons",5,"chest"]
+];
+document.getElementById("games").innerHTML=games.map((g,i)=>`<div class="game" onclick="startGame(${i})"><h3>${g[0]}</h3><p>Prix : ${g[1]} ⭐</p></div>`).join("");
+
+function startGame(i){
+let g=games[i];if(tokens<g[1]){alert("Il te faut "+g[1]+" ⭐ pour jouer.");return}tokens-=g[1];save();
+let area=document.getElementById("gameArea");area.style.display="block";area.innerHTML=`<h2>${g[0]}</h2><div class="gamebox" id="gb"></div><button onclick="document.getElementById('gameArea').style.display='none'">Quitter</button>`;play(g[2]);
+}
+function win(n=1){xp+=10*n;tokens+=n;save();document.getElementById("gb").innerHTML+=`<p class="good">🎉 Gagné ! +${10*n} XP et +${n} ⭐</p>`}
+function play(type){
+let b=document.getElementById("gb");
+if(type==="click"){b.innerHTML=`<p>Tu as 5 secondes pour cliquer le plus possible !</p><button class="big" onclick="this.textContent='⚡'">⚡</button><p id="ct">0 clic</p>`;let n=0,t=setInterval(()=>{n++;document.getElementById("ct").textContent=n+" clics";if(n>=5){clearInterval(t);win()}},1000)}
+else if(type==="guess"){let n=Math.floor(Math.random()*10)+1;b.innerHTML=`<p>Je pense à un nombre entre 1 et 10.</p><input id="gi" type="number"><button onclick="let v=+gi.value;if(v===${n})win();else alert('Raté ! C’était '+${n})">Deviner</button>`}
+else if(type==="true"){let a=Math.random()>0.5,txt=a?"Un triangle a 180° au total.":"Un carré a 5 côtés.";b.innerHTML=`<p>${txt}</p><button onclick="win()">Vrai</button> <button onclick="alert('Essaie encore !')">Faux</button>`}
+else if(type==="math"){let a=Math.floor(Math.random()*9)+1,c=Math.floor(Math.random()*9)+1;b.innerHTML=`<p>${a} × ${c} = ?</p><input id="mi" type="number"><button onclick="if(+mi.value===${a*c})win();else alert('Raté !')">Valider</button>`}
+else if(type==="sequence"){b.innerHTML=`<p>Quelle est la suite ? <b>2, 4, 6, 8, ?</b></p><button onclick="win()">10</button><button onclick="alert('Non')">12</button>`}
+else if(type==="dice"){let n=Math.floor(Math.random()*6)+1;b.innerHTML=`<p>Lance le dé. Si tu fais 6, tu gagnes.</p><button onclick="if(Math.floor(Math.random()*6)+1===6)win();else alert('Pas de 6 !')">🎲 Lancer</button>`}
+else if(type==="higher"){let n=Math.floor(Math.random()*20)+1;b.innerHTML=`<p>Le nombre est <b>${n}</b>. Choisis s'il est pair ou impair.</p><button onclick="${n}%2===0? 'win()':'alert(\\'Non\\')'">Pair</button><button onclick="${n}%2!==0? 'win()':'alert(\\'Non\\')'">Impair</button>`}
+else if(type==="timer"){b.innerHTML=`<p>Clique quand tu penses que 5 secondes sont passées.</p><button id="startT" onclick="let t=Date.now();this.onclick=()=>{let d=Math.abs(Date.now()-t-5000);d<800?win():alert('Écart de '+(d/1000).toFixed(1)+' s')};this.textContent='STOP !'">START</button>`}
+else if(type==="code"){let n=Math.floor(Math.random()*900)+100;b.innerHTML=`<p>Code secret : <b>${n}</b>. Retape-le.</p><input id="ci"><button onclick="if(ci.value==='${n}')win();else alert('Mauvais code')">Ouvrir</button>`}
+else if(type==="count"){b.innerHTML=`<p>Quel nombre vient avant 100 ?</p><button onclick="win()">99</button><button onclick="alert('Non')">101</button>`}
+else if(type==="parity"){let n=Math.floor(Math.random()*50)+1;b.innerHTML=`<p>${n} est...</p><button onclick="${n}%2===0?'win()':'alert(\\'Non\\')'">Pair</button><button onclick="${n}%2!==0?'win()':'alert(\\'Non\\')'">Impair</button>`}
+else if(type==="target"){let n=Math.floor(Math.random()*10)+1;b.innerHTML=`<p>Choisis ${n} !</p>`+[1,2,3,4,5,6,7,8,9,10].map(x=>`<button onclick="${x===n?'win()':'alert(\\'Raté\\')'}">${x}</button>`).join(" ")}
+else if(type==="flash"){let a=7,c=3;b.innerHTML=`<div class="big">7 + 3 = ?</div><button onclick="win()">10</button><button onclick="alert('Non')">11</button>`}
+else if(type==="triangle"){b.innerHTML=`<p>Combien d'angles a un triangle ?</p><button onclick="win()">3</button><button onclick="alert('Non')">4</button>`}
+else if(type==="chest"){let n=Math.floor(Math.random()*3);b.innerHTML=`<p>Choisis un coffre 🎁</p><button onclick="${n===0?'win(3)':'alert(\\'Coffre vide !\\')'}">A</button><button onclick="${n===1?'win(3)':'alert(\\'Coffre vide !\\')'}">B</button><button onclick="${n===2?'win(3)':'alert(\\'Coffre vide !\\')'}">C</button>`}
+}
+function show(id,btn){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active")}
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+}
+</script>
+</body>
+</html>

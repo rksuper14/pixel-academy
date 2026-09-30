@@ -1,0 +1,15 @@
+PIXEL ACADEMY — VERSION MOBILE INSTALLABLE
+
+Cette version reprend l'application Maths 5e déjà créée :
+- cours simplifiés
+- défis de maths
+- XP et niveaux
+- jetons
+- codes cadeaux
+- 15 mini-jeux
+- sauvegarde locale
+- installation comme une application grâce à la PWA
+
+IMPORTANT :
+Pour qu'une PWA soit installable sur les téléphones d'autres personnes, les fichiers doivent être hébergés sur un site HTTPS.
+Le dossier peut ensuite être envoyé sur un hébergeur web.

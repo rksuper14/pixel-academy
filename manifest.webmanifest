@@ -1,0 +1,19 @@
+{
+  "name": "Pixel Academy — Maths 5e",
+  "short_name": "Pixel Academy",
+  "description": "Cours, défis, XP, jetons et mini-jeux de maths niveau 5e.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#101425",
+  "theme_color": "#5b45ff",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
